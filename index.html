@@ -94,7 +94,7 @@
 <body>
   <header>
     <h1>In-Game Staff Shift Tracker</h1>
-    <div class="sub">Created by Choppovm for the SCP: Roleplay custom server Armed Research Installation-V</div>
+    <div class="sub">Created by Choppovm for the SCP: Roleplay custom server Armed Research Installation V</div>
   </header>
 
   <div class="grid">
@@ -115,7 +115,7 @@
       <select id="team">
         <option>[CHOOSE AN OPTION]</option>
         <option>Server Start Up Hosts</option>
-        <option>Game Moderation</option>
+        <option>Game Moderation Team</option>
         <option>Acting Department</option>
         <option>Event Committee</option>
         <option>Morphing Department</option>
@@ -396,20 +396,20 @@
 
       const duration = timeEl.textContent;
       const lines = [
-        `SCP:RP Shift Log`,
-        `Roblox: ${roblox || '—'}`,
-        `Discord: ${discord || '—'}`,
-        `Codename: ${codename || '—'}`,
-        `Team: ${team}`,
-        `Start: ${startStamp || '—'}`,
-        `End: ${endStamp || '—'}`,
-        `Duration: ${duration}`,
-        `Start Screenshot: ${slotStart.blob ? '(present — use Copy Image)' : '—'}`,
-        `End Screenshot: ${slotEnd.blob ? '(present — use Copy Image)' : '—'}`,
+        `**__SCP:RP Shift Log__**`,
+        `**Roblox:** ${roblox || '—'}`,
+        `**Discord:** ${discord || '—'}`,
+        `**Codename:** ${codename || '—'}`,
+        `**Team:** ${team}`,
+        `**Start:** ${startStamp || '—'}`,
+        `**End:** ${endStamp || '—'}`,
+        `**Duration:** ${duration}`,
+        `**Start Screenshot:** ${slotStart.blob ? '(`Use the Copy Image button to get your screenshot!`)' : '—'}`,
+        `**End Screenshot:** ${slotEnd.blob ? '(`Use the Copy Image button to get your screenshot!`)' : '—'}`,
       ];
       const text = lines.join('\n');
       navigator.clipboard.writeText(text).then(() => {
-        alert('Shift summary copied to clipboard.');
+        alert('Shift summary copied to clipboard. Do not close this tab yet; you might still need it!');
       }).catch(() => alert('Copy failed.'));
     }
     document.getElementById('copySummary').addEventListener('click', copySummary);
