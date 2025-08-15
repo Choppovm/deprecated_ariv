@@ -393,7 +393,7 @@
       const discord = document.getElementById('discord').value.trim();
       const codename = document.getElementById('codename').value.trim();
       const team = document.getElementById('team').value;
-
+    
       const duration = timeEl.textContent;
       const lines = [
         `**__SCP:RP Shift Log__**`,
@@ -408,9 +408,45 @@
         `**End Screenshot:** ${slotEnd.blob ? '(`Use the Copy Image button to get your screenshot!`)' : '—'}`,
       ];
       const text = lines.join('\n');
-      navigator.clipboard.writeText(text).then(() => {
-        alert('Shift summary copied to clipboard. Do not close this tab yet; you might still need it!');
-      }).catch(() => alert('Copy failed.'));
+    
+      // Set the appropriate webhook URL based on the team selection
+      let webhookURL = '';
+    
+      switch (team) {
+        case 'Server Start Up Hosts':
+          webhookURL = ${{ secrets.DISCORD_WEBHOOK_SERVERSTARTUPDEPARTMENT }}; // GitHub Secret
+          break;
+        case 'Game Moderation Team':
+          webhookURL = ${{ secrets.DISCORD_WEBHOOK_GAMEMODERATIONTEAM }}; // GitHub Secret
+          break;
+        case 'Acting Department':
+          webhookURL = ${{ secrets.DISCORD_WEBHOOK_ACTINGDEPARTMENT }}; // GitHub Secret
+          break;
+        case 'Event Committee':
+          webhookURL = ${{ secrets.DISCORD_WEBHOOK_EVENTCOMMITTEE }}; // GitHub Secret
+          break;
+        case 'Morphing Department':
+          webhookURL = ${{ secrets.DISCORD_WEBHOOK_MORPHINGDEPARTMENT }}; // GitHub Secret
+          break;
+        default:
+          alert('Please select a valid team.');
+          return;
+      }
+    
+      // Send the data to the selected webhook
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: text }),
+      })
+      .then(() => {
+        alert('Shift summary sent to the appropriate webhook!');
+      })
+      .catch(() => {
+        alert('Failed to send shift summary to the webhook.');
+      });
     }
     document.getElementById('copySummary').addEventListener('click', copySummary);
   </script>
