@@ -126,6 +126,8 @@
           <option value="MORPHINGDEPARTMENT">Morphing Department</option>
           <option value="APPEALSANDREPORTSTEAM">Appeals and Reports Team</option>
         </select>
+        <textarea id="message" placeholder="(TEMPTESTING) Enter shift log..."></textarea>
+        <button type="submittemptesting">(TEMP TESTING) Send</button>
       </form>
 
       <div style="height:12px"></div>
@@ -420,6 +422,42 @@
       }).catch(() => alert('Copy failed.'));
     }
     document.getElementById('copySummary').addEventListener('click', copySummary);
+
+    // TEMP PLACEHOLDER START
+    document.getElementById("shift-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+    
+      const team = document.getElementById("team").value;
+      const message = document.getElementById("message").value;
+      const statusDiv = document.getElementById("status");
+    
+      // Build Discord payload
+      const payload = {
+        content: message,
+        username: "Shift Tracker Bot"
+      };
+    
+      try {
+        const response = await fetch("/.netlify/functions/proxy", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ team, payload })
+        });
+    
+        if (response.ok) {
+          statusDiv.textContent = "✅ Message sent!";
+          statusDiv.style.color = "green";
+        } else {
+          const err = await response.text();
+          statusDiv.textContent = `❌ Error: ${err}`;
+          statusDiv.style.color = "red";
+        }
+      } catch (error) {
+        statusDiv.textContent = `⚠️ Failed: ${error.message}`;
+        statusDiv.style.color = "red";
+      }
+    });
+    // TEMP PLACEHOLDER END
   </script>
 </body>
 </html>
