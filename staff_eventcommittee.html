@@ -54,4 +54,30 @@
       </div>
     
     <div class="footer">Created by <b>Choppovm</b> for Armed Research Installation V (ARIV) | This project is open-source</div>
+        <script>
+            (async () => {
+              const token = localStorage.getItem("discord_access_token");
+              const roleId = "1404268041759494204"; // Event Committee
+            
+              if (!token) {
+                window.location.href = "/.netlify/functions/login";
+                return;
+              }
+            
+              try {
+                const res = await fetch(`/.netlify/functions/verify?roleId=${roleId}`, {
+                  headers: { Authorization: `Bearer ${token}` }
+                });
+                const data = await res.json();
+            
+                if (!data.verified) {
+                  window.location.href = "/redirect.html";
+                }
+                // else: stay on page
+              } catch (err) {
+                console.error("Verification error", err);
+                window.location.href = "/redirect.html";
+              }
+            })();
+        </script>
   </body></html>
