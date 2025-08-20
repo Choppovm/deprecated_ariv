@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 export async function handler(event) {
   const CLIENT_ID = process.env.DISCORD_APPLICATION_CLIENT_ID;
   const CLIENT_SECRET = process.env.DISCORD_APPLICATION_CLIENT_SECRET;
@@ -14,7 +12,7 @@ export async function handler(event) {
   }
 
   try {
-    // Exchange code for token
+    // 1. Exchange code for access token
     const tokenResponse = await fetch("https://discord.com/api/oauth2/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -31,13 +29,17 @@ export async function handler(event) {
     const tokenData = await tokenResponse.json();
     const accessToken = tokenData.access_token;
 
-    // Get user info
+    if (!accessToken) {
+      return { statusCode: 400, body: "Failed to get access token" };
+    }
+
+    // 2. Get user info
     const userResponse = await fetch("https://discord.com/api/users/@me", {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     const user = await userResponse.json();
 
-    // Check guild membership
+    // 3. Get member info in the target guild
     const memberResponse = await fetch(
       `https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`,
       { headers: { Authorization: `Bearer ${accessToken}` } }
@@ -51,6 +53,7 @@ export async function handler(event) {
     const member = await memberResponse.json();
     const hasRole = member.roles.includes(ROLE_ID);
 
+    // 4. Send webhook result
     await sendEmbed(user, hasRole, WEBHOOK_URL);
 
     return {
