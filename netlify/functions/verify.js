@@ -1,5 +1,5 @@
 export async function handler(event) {
-  const GUILD_ID = "1404264776871182446";
+  const GUILD_ID = "1404264776871182446"; // staff server
 
   const authHeader = event.headers.authorization;
   if (!authHeader) {
