@@ -41,17 +41,45 @@
       .note { background:#131a25; border:1px solid var(--border); border-radius: 10px; padding:10px; color: var(--muted); font-size:.9rem; }
     </style>
   </head>
-    <body data-bm="55">
+  <body data-bm="55">
+    <script>
+      (async () => {
+        const token = localStorage.getItem("discord_access_token");
+        const roleId = "1404xxxxxxxxxxxxx"; // <-- put this page's required role ID here
+      
+        if (!token) {
+          window.location.href = "/.netlify/functions/login";
+          return;
+        }
+      
+        try {
+          const res = await fetch(`/.netlify/functions/verify?roleId=${encodeURIComponent(roleId)}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+      
+          const data = await res.json();
+      
+          if (!data.verified) {
+            window.location.href = "/redirect.html";
+          }
+          // else: stay on page
+        } catch (err) {
+          console.error("Verification error", err);
+          window.location.href = "/redirect.html";
+        }
+        })();
+    </script>
+
     <header>
       <h1>Event Committee | Activity Tracker</h1>
       <div class="">Created by Choppovm for the SCP: Roleplay custom server Armed Research Installation V</div>
     </header>
-  
+
     <div class="card">
       <h2>This section is in development!</h2>
       <div class="bar"></div>
       <label>Coming soon.</label>
-      </div>
-    
+    </div>
     <div class="footer">Created by <b>Choppovm</b> for Armed Research Installation V (ARIV) | This project is open-source</div>
-  </body></html>
+  </body>
+</html>
