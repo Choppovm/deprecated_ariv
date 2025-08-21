@@ -73,7 +73,7 @@ export async function handler(event) {
     );
 
     if (memberResponse.status !== 200) {
-      await sendEmbed(user, false, webhook);
+      await sendEmbed(user, false, webhook, pageKey);
       return { statusCode: 200, body: "User not in guild" };
     }
 
@@ -81,7 +81,7 @@ export async function handler(event) {
     const hasRole = member.roles.includes(roleId);
 
     // 4. Send webhook result
-    await sendEmbed(user, hasRole, webhook);
+    await sendEmbed(user, hasRole, webhook, pageKey);
 
     return {
       statusCode: 200,
@@ -95,14 +95,21 @@ export async function handler(event) {
   }
 }
 
-async function sendEmbed(user, success, webhookUrl) {
+async function sendEmbed(user, success, webhookUrl, staffPanelKey) {
   const embed = {
-    title: success ? "Success" : "Failure",
+    title: success ? "Success | Access Authorised" : "Failure | Access Blocked",
     description: success
       ? `${user.username}#${user.discriminator} has the required role.`
       : `${user.username}#${user.discriminator} does not have the role.`,
     color: success ? 0x00ff00 : 0xff0000,
     thumbnail: { url: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` },
+    author: {
+      name: `${user.username}#${user.discriminator} attempted using the staff panel.`,
+      icon_url: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+    },
+    footer: {
+      text: `Staff Panel: ${staffPanelKey} • ${new Date().toLocaleString()}`
+    }
   };
 
   await fetch(webhookUrl, {
