@@ -41,7 +41,35 @@
       .note { background:#131a25; border:1px solid var(--border); border-radius: 10px; padding:10px; color: var(--muted); font-size:.9rem; }
     </style>
   </head>
-    <body data-bm="55">
+  <body data-bm="55" data-page-key="actingdepartment">
+    <script>
+      (async () => {
+        const token = localStorage.getItem("discord_access_token");
+        const pageKey = document.body.dataset.pageKey; // "actingdepartment"
+          
+        if (!token) {
+          // Send to login with pageKey
+          window.location.href = `/.netlify/functions/login?pageKey=${encodeURIComponent(pageKey)}`;
+          return;
+        }
+          
+        try {
+          const res = await fetch(`/.netlify/functions/verify?pageKey=${encodeURIComponent(pageKey)}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+            
+          const data = await res.json();
+            
+          if (!data.verified) {
+            window.location.href = "/redirect.html";
+          }
+          // else: stay on page
+        } catch (err) {
+          console.error("Verification error", err);
+          window.location.href = "/redirect.html";
+        }
+      })();
+    </script>
     <header>
       <h1>Acting Department | Activity Tracker</h1>
       <div class="">Created by Choppovm for the SCP: Roleplay custom server Armed Research Installation V</div>
