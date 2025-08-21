@@ -2,8 +2,8 @@ export async function handler(event) {
   const CLIENT_ID = process.env.DISCORD_APPLICATION_CLIENT_ID;
   const CLIENT_SECRET = process.env.DISCORD_APPLICATION_CLIENT_SECRET;
   const REDIRECT_URI = "https://ariv-staff-activity-logger.netlify.app/.netlify/functions/callback";
-  const GUILD_ID = "1403892617766375507"; // main server
-  const ROLE_ID = "1403893385588113500"; // suspended role
+  const GUILD_ID = "1404264776871182446"; // staff server (temp)
+  const ROLE_ID = "1404268041759494204"; // event committee role (temp)
   const WEBHOOK_URL = process.env.DISCORD_GLOBAL_WEBHOOK_LOG;
 
   const code = event.queryStringParameters.code;
