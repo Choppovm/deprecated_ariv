@@ -1,7 +1,6 @@
 // FILE USES SCP: ROLEPLAY IN-GAME ADDON. SUBJECT TO CHANGE.
 exports.handler = async function(event, context) {
-  const discordWebhook = process.env.DISCORD_WEBHOOK_TEMPSCPRPCHOPLOGS; // temp webhook url
-
+  const discordWebhook = process.env.DISCORD_WEBHOOK_INGAMECHATLOGS;
   if (!discordWebhook) {
     return {
       statusCode: 500,
