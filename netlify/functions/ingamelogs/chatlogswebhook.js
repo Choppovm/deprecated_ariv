@@ -1,6 +1,6 @@
-// FILE USES SCP: ROLEPLAY IN-GAME ADDON. MAY BE DELETED.
+// FILE USES SCP: ROLEPLAY IN-GAME ADDON. SUBJECT TO CHANGE.
 exports.handler = async function(event, context) {
-  const discordWebhook = process.env.DISCORD_WEBHOOK_TEMPSCPRPCHOPLOGS;
+  const discordWebhook = process.env.DISCORD_WEBHOOK_TEMPSCPRPCHOPLOGS; // temp webhook url
 
   if (!discordWebhook) {
     return {
