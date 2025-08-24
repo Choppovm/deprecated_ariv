@@ -1,37 +1,28 @@
 // FILE USES SCP: ROLEPLAY IN-GAME ADDON. SUBJECT TO CHANGE.
-exports.handler = async function(event, context) {
-  const discordWebhook = process.env.DISCORD_WEBHOOK_INGAMECHATLOGS;
-  if (!discordWebhook) {
-    return {
-      statusCode: 500,
-      body: "Discord webhook URL not configured."
-    };
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+export async function handler(event) {
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  try {
-    const body = JSON.parse(event.body);
+  const data = JSON.parse(event.body);
 
-    const response = await fetch(discordWebhook, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: body.content })
-    });
+  const { username, message, timestamp } = data;
 
-    if (!response.ok) {
-      return {
-        statusCode: response.status,
-        body: `Discord webhook error: ${response.statusText}`
-      };
-    }
+  const { error } = await supabase
+    .from('chat_logs')
+    .insert([{ username, message, timestamp }]);
 
-    return {
-      statusCode: 200,
-      body: "Message sent to Discord successfully."
-    };
-  } catch (error) {
-    return {
-      statusCode: 400,
-      body: `Error: ${error.message}`
-    };
+  if (error) {
+    console.error(error);
+    return { statusCode: 500, body: 'Insert failed' };
   }
-};
+
+  return { statusCode: 200, body: 'Chat saved' };
+}
