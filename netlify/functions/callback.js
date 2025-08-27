@@ -90,15 +90,12 @@ export async function handler(event) {
       headers: { "Content-Type": "text/html" },
       body: `
         <script>
-          localStorage.setItem("discord_access_token", "${accessToken}");
-          const pageKey = "${pageKey}";
-          const redirectUrl = ${hasRole}
-            ? "/staff_" + pageKey + ".html"
-            : "/redirect.html";
-          window.location.href = redirectUrl;
+          sessionStorage.setItem("discord_access_token", "${accessToken}");
+          window.location.href = "${hasRole ? `/staff_${pageKey}.html` : `/redirect.html`}";
         </script>
       `
     };
+
 
   } catch (err) {
     console.error(err);
