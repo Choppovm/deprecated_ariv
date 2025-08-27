@@ -87,10 +87,19 @@ export async function handler(event) {
 
     return {
       statusCode: 200,
-      body: hasRole
-        ? "User has the required role"
-        : "User is in guild but missing role"
+      headers: { "Content-Type": "text/html" },
+      body: `
+        <script>
+          localStorage.setItem("discord_access_token", "${accessToken}");
+          const pageKey = "${pageKey}";
+          const redirectUrl = ${hasRole}
+            ? "/staff_" + pageKey + ".html"
+            : "/redirect.html";
+          window.location.href = redirectUrl;
+        </script>
+      `
     };
+
   } catch (err) {
     console.error(err);
     return { statusCode: 500, body: "Error occurred" };
