@@ -44,7 +44,7 @@
   <body data-bm="55" data-page-key="serverstartuphosts">
     <script>
       (async () => {
-        const token = localStorage.getItem("discord_access_token");
+        const token = sessionStorage.getItem("discord_access_token");
         const pageKey = document.body.dataset.pageKey; // "serverstartuphosts"
           
         if (!token) {
