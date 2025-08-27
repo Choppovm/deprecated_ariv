@@ -31,6 +31,7 @@ export async function handler(event) {
       webhook: process.env.DISCORD_WEBHOOK_MORPHINGDEPARTMENT
     }
   };
+  const globalWebhook = process.env.DISCORD_GLOBAL_WEBHOOK_LOG; // staff server access attempt log
 
   const code = event.queryStringParameters.code;
   const pageKey = event.queryStringParameters.state;
@@ -81,7 +82,8 @@ export async function handler(event) {
     const hasRole = member.roles.includes(roleId);
 
     // 4. Send webhook result
-    await sendEmbed(user, hasRole, webhook, pageKey);
+    // await sendEmbed(user, hasRole, webhook, pageKey); // temporarily removed
+    await sendEmbed(user, hasRole, globalWebhook, pageKey);
 
     return {
       statusCode: 200,
