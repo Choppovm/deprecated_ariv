@@ -1,4 +1,7 @@
-# ariv_staff_activity_logger
+# [DEPRECATED] ARIV Utilities Website
 In-game activity logging site for ARI-V staff. 
 
-(Hosted on netlify instead of Github Pages only because webhooks are used and I don't really feel like leaking them)
+## Deprecated as of 06.09.2025 (DD.MM.YYYY).
+ARIV has been deleted by hammers. This website is no longer being hosted.
+
+If anybody wishes to reuse the code from this website, view the repository from a previous time. No, I won't be helping you set it up, I have other things I'm doing.
